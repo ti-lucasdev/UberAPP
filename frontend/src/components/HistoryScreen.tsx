@@ -1,4 +1,4 @@
-import { ArrowUpRight, CalendarDays, ChevronRight, CircleDollarSign, Route } from 'lucide-react'
+import { ArrowUpRight, CalendarDays, ChevronRight, Route } from 'lucide-react'
 import { formatBRL } from '../utils/calculations'
 
 const rides = [
@@ -14,7 +14,7 @@ export function HistoryScreen() {
     <section className="history-list" aria-label="Lista de jornadas">
       <div className="history-list-head"><span>JORNADA</span><span>RECEITA</span><span>LUCRO LÍQUIDO</span><span /></div>
       {rides.map((ride) => <article className="history-row" key={ride.day}>
-        <div className="ride-main"><span className="ride-icon"><Route size={19} /></span><div><strong>{ride.apps}</strong><small>{ride.day} · {ride.km}</small></div></div>
+        <div className="ride-main"><span className="ride-icon"><Route size={19} /></span><div><strong>{ride.apps}</strong><small>{ride.day} · {ride.km}<b className="mobile-ride-profit"> · {formatBRL(ride.net)}</b></small></div></div>
         <span className="ride-gross">{formatBRL(ride.gross)}</span>
         <strong className="ride-net">{formatBRL(ride.net)} <small>{ride.status}</small></strong>
         <ChevronRight size={19} />

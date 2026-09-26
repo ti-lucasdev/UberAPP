@@ -10,7 +10,7 @@ export function SettingsScreen() {
   return <section className="secondary-page settings-page">
     <header className="secondary-heading"><div><p className="eyebrow">CONFIGURAÇÕES</p><h1>Do seu jeito,<br /><em>do seu giro.</em></h1><p>Deixe seus dados prontos para calcular ainda mais rápido.</p></div><span className="settings-badge"><ShieldCheck size={18} /> Dados salvos localmente</span></header>
     <section className="settings-layout">
-      <article className="vehicle-preview"><span className="vehicle-icon"><Car size={28} /></span><p>VEÍCULO ATIVO</p><h2>{vehicle || 'Meu veículo'}</h2><div><span><Fuel size={16} /> Combustível</span><b>R$ {fuel}/L</b></div><div><span><Gauge size={16} /> Consumo médio</span><b>{average} km/L</b></div></article>
+      <article className="vehicle-preview"><span className="vehicle-icon"><Car size={28} /></span><p>VEÍCULO ATIVO</p><h2>{vehicle || 'Meu veículo'}</h2><div><span><Fuel size={16} /> Combustível <small className="mobile-preview-value">R$ {fuel}/L</small></span><b>R$ {fuel}/L</b></div><div><span><Gauge size={16} /> Consumo médio <small className="mobile-preview-value">{average} km/L</small></span><b>{average} km/L</b></div></article>
       <form className="settings-form" onSubmit={(event) => { event.preventDefault(); setSaved(true) }}>
         <div className="settings-form-head"><span><Car size={19} /></span><div><h2>Dados do veículo</h2><p>Usamos essas informações nos próximos cálculos.</p></div></div>
         <label>Nome do veículo<input value={vehicle} onChange={(event) => { setVehicle(event.target.value); setSaved(false) }} /></label>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Menu, Trash2 } from 'lucide-react'
 import { OperatingCosts } from './components/OperatingCosts'
 import { ResultCard } from './components/ResultCard'
@@ -9,14 +9,20 @@ import { DriverIllustration } from './components/DriverIllustration'
 import { SummaryScreen } from './components/SummaryScreen'
 import { HistoryScreen } from './components/HistoryScreen'
 import { SettingsScreen } from './components/SettingsScreen'
+import { LogoMark } from './components/AppLogo'
 import { calculateDriverProfit, maskCurrency, parseDecimal } from './utils/calculations'
 import type { CalculationInput, RevenueValues } from './types'
 
 const defaultRevenues: RevenueValues = { uber: '99,00', ninetyNine: '0,00', particular: '23,00', inDriver: '0,00' }
+const navigationByHash: Record<string, string> = { '#resumo': 'Resumo', '#historico': 'Histórico', '#configuracoes': 'Configurações' }
+
+function navigationFromHash() {
+  return navigationByHash[window.location.hash] ?? 'Nova jornada'
+}
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [activeNav, setActiveNav] = useState('Nova jornada')
+  const [activeNav, setActiveNav] = useState(navigationFromHash)
   const [revenues, setRevenues] = useState<RevenueValues>(defaultRevenues)
   const [kilometers, setKilometers] = useState('42')
   const [fuelPrice, setFuelPrice] = useState('5,89')
@@ -32,11 +38,23 @@ export default function App() {
   const updateRevenue = (key: keyof RevenueValues, value: string) => setRevenues((current) => ({ ...current, [key]: maskCurrency(value) }))
   const clearFields = () => { setRevenues({ uber: '', ninetyNine: '', particular: '', inDriver: '' }); setKilometers(''); setFuelPrice(''); setVehicleAverage('') }
   const calculate = () => document.querySelector('.result-column')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  const navigate = (item: string) => {
+    const hash = Object.entries(navigationByHash).find(([, label]) => label === item)?.[0] ?? '#nova-jornada'
+    window.location.hash = hash
+    setActiveNav(item)
+    setMenuOpen(false)
+  }
+
+  useEffect(() => {
+    const syncNavigation = () => setActiveNav(navigationFromHash())
+    window.addEventListener('hashchange', syncNavigation)
+    return () => window.removeEventListener('hashchange', syncNavigation)
+  }, [])
 
   return <div className="app-shell">
-    <Sidebar activeNav={activeNav} isOpen={menuOpen} onNavigate={(item) => { setActiveNav(item); setMenuOpen(false) }} onClose={() => setMenuOpen(false)} />
+    <Sidebar activeNav={activeNav} isOpen={menuOpen} onNavigate={navigate} onClose={() => setMenuOpen(false)} />
     <main className="main-content">
-      <button className="mobile-menu" onClick={() => setMenuOpen(true)} aria-label="Abrir menu"><Menu size={23} /><span>giro <b>certo!</b></span></button>
+      <button className="mobile-menu" onClick={() => setMenuOpen(true)} aria-label="Abrir menu"><Menu size={21} /><LogoMark className="mobile-logo-mark" /><span>giro <b>certo!</b></span></button>
       {activeNav === 'Nova jornada' ? <>
         <section className="hero">
           <div className="hero-copy"><p className="eyebrow">NOVA JORNADA</p><h1>Quanto caiu<br /> <em>no bolso?</em></h1><p className="hero-description">Informe as receitas e os custos da jornada.<br />O resultado mostra o lucro líquido estimado.</p></div>

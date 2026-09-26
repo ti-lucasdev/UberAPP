@@ -1,0 +1,81 @@
+/* Final responsive layer: it deliberately overrides the fixed desktop art direction
+   only when the viewport no longer has room for it. */
+img { max-width: 100%; }
+html, body { max-width: 100%; }
+
+@media (min-width: 981px) and (max-width: 1400px) {
+  html, body, #root { height: auto; overflow: auto; }
+  .app-shell { min-height: 100vh; height: auto; padding-left: 250px; }
+  .sidebar { width: 250px; padding: 25px 15px; }
+  .main-content { height: auto; min-height: 100vh; padding: 0 26px 36px; overflow: visible; }
+  .driver-illustration { width: min(56vw, 680px); }
+  .calculation-layout { grid-template-columns: 1fr; max-width: 960px; margin: 0 auto; }
+  .form-card, .result-column { min-height: 0; }
+  .result-column { grid-template-columns: minmax(0, 1fr) minmax(260px, .62fr); align-items: stretch; }
+  .tip-card { height: auto; }
+  .secondary-page { height: auto; min-height: 100vh; padding-bottom: 36px; }
+}
+
+@media (max-width: 1100px) {
+  html, body, #root { min-height: 100%; height: auto; overflow-x: hidden; }
+  .app-shell { min-height: 100dvh; padding-left: 0; }
+  .sidebar { width: min(82vw, 320px); padding: 31px 23px 25px; overflow: hidden; transform: translateX(-105%); }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-visual { position: absolute; z-index: 0; right: 0; bottom: 0; left: 0; height: 54%; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 27%); mask-image: linear-gradient(to bottom, transparent, #000 27%); }
+  .sidebar-visual img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center bottom; }
+  .app-logo, .sidebar-nav, .sidebar-footer { position: relative; z-index: 1; }
+  .sidebar-footer { margin-top: auto; }
+  .mobile-menu { display: inline-flex; position: relative; z-index: 5; align-items: center; gap: 9px; margin: 0 0 24px; padding: 0; border: 0; background: transparent; color: #0a2140; font-size: 18px; font-weight: 800; }
+  .mobile-menu b { color: #0aae87; }
+  .close-menu { display: grid; }
+  .menu-backdrop.visible { display: block; }
+  .main-content { width: 100%; max-width: none; min-height: 100dvh; padding: 26px clamp(22px, 5vw, 42px) 42px; overflow: visible; }
+  .hero { min-height: 336px; height: 336px; }
+  .hero-copy { position: relative; z-index: 2; top: auto; left: auto; max-width: 55%; }
+  .hero h1 { font-size: clamp(44px, 7vw, 62px); letter-spacing: -3px; }
+  .hero-description { font-size: 14px; }
+  .driver-illustration { top: auto; right: -42px; bottom: 0; width: min(62vw, 570px); height: 218px; border-radius: 72px 0 0; }
+  .utility-bar { display: none; }
+  .calculation-layout { grid-template-columns: 1fr; max-width: 820px; margin: 0 auto; }
+  .form-card, .result-column { min-height: 0; }
+  .result-column { grid-template-columns: minmax(0, 1fr) minmax(240px, .58fr); align-items: start; }
+  .result-card { min-height: 0; }
+  .gross-value { position: relative; }.gross-value img { position: absolute; top: -9px; right: 0; width: 116px; height: 96px; object-fit: contain; }
+  .secondary-page { height: auto; min-height: 100dvh; padding: 8px 0 38px; }
+}
+
+@media (max-width: 720px) {
+  body { background: #f2f7fa; }
+  .main-content { width: 100vw; padding: calc(16px + env(safe-area-inset-top)) 16px 32px; overflow-x: clip; }
+  .mobile-menu { height: 43px; gap: 8px; margin-bottom: 20px; padding: 0 12px; border: 1px solid #e2ebf1; border-radius: 12px; background: rgba(255,255,255,.86); box-shadow: 0 5px 18px rgba(22,53,78,.05); font-size: 16px; }
+  .hero { min-height: 399px; height: 399px; }
+  .hero-copy { max-width: none; }
+  .eyebrow { margin-bottom: 12px; color: #55718b; font-size: 10px; }
+  .eyebrow:before { width: 31px; height: 2px; }
+  .hero h1 { font-size: clamp(40px, 12vw, 50px); letter-spacing: -2.7px; line-height: .93; }
+  .hero-description { margin-top: 16px; max-width: 315px; color: #587088; font-size: 13px; line-height: 1.5; }
+  .driver-illustration { right: 0; bottom: 0; width: 100%; height: 171px; border-radius: 23px; box-shadow: 0 12px 22px rgba(16,52,76,.12); }
+  .driver-illustration:after { display: block; border-color: rgba(255,255,255,.7); }
+  .calculation-layout { width: calc(100vw - 32px); max-width: 100%; margin-inline: 0; }
+  .calculation-layout, .form-card, .revenue-grid, .revenue-input, .revenue-input label, .money-field, .cost-grid, .cost-field, .cost-control, .result-column, .result-card { min-width: 0; max-width: 100%; }
+  .form-card { width: 100%; overflow: hidden; padding: 21px 17px 19px; border: 1px solid #e1eaf0; border-radius: 20px; box-shadow: 0 10px 28px rgba(27,56,80,.06); }
+  .step-heading { gap: 10px; align-items: center; }.step-heading h2 { font-size: 17px; letter-spacing: -.7px; }.step-heading small { color: #7790a3; font-size: 10px; white-space: nowrap; }
+  .step-number { width: 38px; height: 38px; border-radius: 11px; }.cost-step { border-radius: 11px; }
+  .revenue-grid, .cost-grid { grid-template-columns: 1fr; gap: 14px; margin-top: 20px; }
+  .average-field { grid-column: auto; }
+  .revenue-input { grid-template-columns: 47px minmax(0, 1fr); width: 100%; }.revenue-input label { width: 100%; overflow: hidden; }.money-field { width: 100%; overflow: hidden; }.money-field input, .cost-control input { max-width: 100%; }.service-icon { width: 47px; height: 47px; }
+  .money-field, .cost-control { min-height: 48px; border-radius: 10px; }
+  .section-divider { margin: 21px 0; }
+  .form-actions { flex-direction: column-reverse; align-items: stretch; gap: 8px; margin-top: 22px; padding-top: 17px; }
+  .clear-action { justify-content: center; min-height: 37px; }.calculate-button { width: 100%; min-width: 0; height: 52px; border-radius: 12px; box-shadow: 0 8px 16px rgba(22,185,151,.18); }
+  .result-column { grid-template-columns: 1fr; gap: 15px; }
+  .result-card { padding: 22px 19px; border: 1px solid #b0eadb; border-radius: 20px; background: linear-gradient(145deg, #effff9, #d9faee); }.result-kicker { font-size: 15px; letter-spacing: -.5px; }.gross-value strong { font-size: 42px; }.gross-value img { width: 94px; height: 78px; }.result-row { min-height: 45px; font-size: 13px; }.result-row b { font-size: 14px; }.net-value { min-height: 61px; border-radius: 13px; }.net-value strong { font-size: 29px; }.tip-card { min-height: 0; padding: 17px; border-radius: 18px; box-shadow: 0 8px 18px rgba(48,100,139,.05); }.tip-fuel { width: 37px; right: 14px; }
+  .secondary-heading { display: block; }.secondary-heading h1 { font-size: 39px; letter-spacing: -2.3px; }.secondary-heading > div > p:last-child { max-width: 300px; font-size: 13px; line-height: 1.45; }.period-pill, .history-filter, .settings-badge { margin: 15px 0 0; }
+  .summary-layout, .settings-layout { grid-template-columns: 1fr; }.profit-hero { min-height: 185px; padding: 23px; }.profit-hero img { width: 120px; height: 108px; right: 12px; }.profit-hero strong { font-size: 34px; }.journey-card { padding: 22px; }.summary-metrics { grid-template-columns: 1fr 1fr; }.summary-metric { min-width: 0; padding: 15px; }.summary-metric strong { font-size: 14px; overflow-wrap: anywhere; }
+  .history-overview { padding: 20px; }.history-list { border-radius: 16px; }.history-row { grid-template-columns: minmax(0, 1fr) auto; padding: 15px; }.ride-main { min-width: 0; }.ride-main strong, .ride-main small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.ride-net { font-size: 13px; }
+  .vehicle-preview, .settings-form { padding: 22px; border-radius: 18px; }.settings-fields { grid-template-columns: 1fr; }.settings-form label > input, .settings-form label > div { min-width: 0; }.notification-row p { max-width: 200px; }
+}
+
+@media (max-width: 380px) {
+  .main-content { padding-inline: 13px; }.hero h1 { font-size: 38px; }.form-card, .result-card { padding-inline: 15px; }.gross-value img { opacity: .55; }.net-value { gap: 8px; padding-inline: 11px; }.net-value strong { font-size: 25px; }.step-heading h2 { font-size: 16px; }
+}

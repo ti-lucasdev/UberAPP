@@ -1,0 +1,54 @@
+.mobile-ride-profit, .mobile-preview-value { display: none; }
+
+@media (max-width: 720px) {
+  .history-page, .settings-page { width: calc(100vw - 32px); max-width: 100%; min-width: 0; }
+  .history-page .secondary-heading { padding: 22px 20px; border-radius: 22px; background: linear-gradient(145deg, #082740, #104968); color: #fff; }
+  .history-page .secondary-heading .eyebrow { color: #70e7cb; }
+  .history-page .secondary-heading .eyebrow:before { background: #70e7cb; }
+  .history-page .secondary-heading h1 { color: #fff; font-size: 37px; }
+  .history-page .secondary-heading h1 em { color: #67e5c4; }
+  .history-page .secondary-heading > div > p:last-child { color: #c3d6e2; }
+  .history-page .history-filter { width: 100%; justify-content: center; margin-top: 17px; border-color: rgba(176,232,224,.32); background: rgba(255,255,255,.1); color: #e8fffb; }
+  .history-page .history-overview { position: relative; margin-top: -4px; padding: 21px; border-radius: 0 0 19px 19px; background: #e4fff6; }
+  .history-page .history-overview article > span { display: block; color: #4e7380; font-size: 12px; font-weight: 700; }
+  .history-page .history-overview strong { font-size: 31px; }
+  .history-page .history-overview strong { display: block; margin: 6px 0; color: #082b48; letter-spacing: -1.3px; }
+  .history-page .history-overview p { display: flex; align-items: center; gap: 6px; margin: 0; color: #1b786c; font-size: 12px; }
+  .history-page .history-list { margin-top: 16px; overflow: hidden; border: 0; border-radius: 18px; background: #fff; box-shadow: 0 9px 24px rgba(20,51,75,.06); }
+  .history-page .history-list-head { display: none; }
+  .history-page .history-row { min-height: 78px; padding: 15px 16px; }
+  .history-page .history-row { display: flex; align-items: center; gap: 10px; border-top: 1px solid #edf1f4; }
+  .history-page .ride-main { display: flex; align-items: center; gap: 11px; min-width: 0; }
+  .history-page .ride-icon { width: 38px; height: 38px; background: #d9fff2; }
+  .history-page .ride-icon { display: grid; place-items: center; flex: 0 0 auto; border-radius: 10px; color: #0c9d7d; }
+  .history-page .ride-main > div { min-width: 0; }.history-page .ride-main strong, .history-page .ride-main small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }.history-page .ride-main strong { color: #102846; font-size: 13px; }.history-page .ride-main small { margin-top: 4px; color: #6e8298; font-size: 10px; }
+  .mobile-ride-profit { display: inline; color: #099d7d; font-weight: 800; }
+  .history-page .ride-gross, .history-page .history-row > svg { display: none; }
+  .history-page .ride-net { display: none; }
+  .history-page .ride-net small { display: block; margin: 5px 0 0; color: #4c847a; font-size: 9px; font-weight: 600; }
+
+  .settings-page .secondary-heading { padding: 2px 2px 20px; }
+  .settings-page .secondary-heading h1 { font-size: 38px; }
+  .settings-page .settings-badge { width: 100%; justify-content: center; color: #167d6d; border-color: #b9eadc; background: #effff8; }
+  .settings-page .settings-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; min-width: 0; }
+  .settings-page .vehicle-preview { position: relative; min-width: 0; min-height: 229px; overflow: hidden; padding: 24px; border-radius: 20px; background: linear-gradient(135deg, #082842, #105b70); color: #fff; }
+  .settings-page .vehicle-preview:after { content: ''; position: absolute; right: -62px; bottom: -78px; width: 230px; height: 230px; border: 28px solid rgba(96,228,195,.13); border-radius: 50%; }
+  .settings-page .vehicle-icon, .settings-page .vehicle-preview p, .settings-page .vehicle-preview h2, .settings-page .vehicle-preview > div { position: relative; z-index: 1; }
+  .settings-page .vehicle-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: #62e4c4; color: #082c46; }
+  .settings-page .vehicle-preview p { margin-top: 17px; }
+  .settings-page .vehicle-preview p { color: #a8c7d6; font-size: 10px; font-weight: 800; letter-spacing: .8px; }
+  .settings-page .vehicle-preview h2 { margin: 7px 0 18px; color: #fff; font-size: 25px; letter-spacing: -1.1px; }
+  .settings-page .vehicle-preview > div { display: flex; align-items: center; justify-content: space-between; margin-top: 11px; padding-top: 11px; border-top: 1px solid rgba(190,238,239,.18); }
+  .settings-page .vehicle-preview > div span { display: inline-flex; align-items: center; gap: 7px; color: #c5dbe4; font-size: 12px; }.settings-page .vehicle-preview > div b { display: none; }.settings-page .mobile-preview-value { display: inline; color: #65e5c4; font-size: 12px; font-weight: 800; }
+  .settings-page .settings-form { min-width: 0; padding: 22px 18px; border: 1px solid #e0eaf0; border-radius: 18px; background: #fff; box-shadow: 0 9px 25px rgba(20,51,75,.05); }
+  .settings-page .settings-form-head { margin-bottom: 19px; }
+  .settings-page .settings-form-head { display: flex; align-items: center; gap: 10px; }.settings-page .settings-form-head > span { display: grid; place-items: center; width: 37px; height: 37px; border-radius: 10px; background: #e8fff7; color: #0c9d7d; }.settings-page .settings-form h2 { margin: 0; color: #102846; font-size: 19px; }.settings-page .settings-form-head p { margin: 3px 0 0; color: #708399; font-size: 11px; }
+  .settings-page .settings-form label { display: block; color: #19334f; font-size: 12px; font-weight: 700; }
+  .settings-page .settings-form label > input, .settings-page .settings-form label > div { width: 100%; height: 49px; margin-top: 7px; border: 1px solid #d7e2ea; border-radius: 11px; background: #fff; }
+  .settings-page .settings-form input { outline: 0; color: #102846; font-size: 14px; font-weight: 700; }.settings-page .settings-form label > input { padding: 0 12px; }
+  .settings-page .settings-fields { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 12px; }.settings-page .settings-fields label > div { display: flex; align-items: center; padding: 0 12px; }.settings-page .settings-fields i, .settings-page .settings-fields b { color: #6b8298; font-size: 12px; font-style: normal; }.settings-page .settings-fields input { width: 100%; padding: 0 9px; border: 0; }
+  .settings-page .notification-row { margin: 17px 0; padding: 14px 0; border-top: 1px solid #edf1f4; border-bottom: 1px solid #edf1f4; }
+  .settings-page .notification-row > span { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: #e9fff6; }
+  .settings-page .notification-row strong { display: block; color: #18314d; font-size: 12px; }.settings-page .notification-row p { margin: 3px 0 0; color: #708399; font-size: 10px; }.settings-page .toggle { width: 39px; height: 23px; margin-left: auto; padding: 3px; border: 0; border-radius: 99px; background: #25c39b; }.settings-page .toggle i { display: block; width: 17px; height: 17px; margin-left: auto; border-radius: 50%; background: #fff; }
+  .settings-page .save-settings { width: 100%; height: 51px; border-radius: 12px; background: linear-gradient(100deg, #4fe0bc, #58e4cb); box-shadow: 0 8px 16px rgba(22,185,151,.16); }
+}
