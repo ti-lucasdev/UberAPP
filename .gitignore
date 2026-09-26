@@ -29,3 +29,7 @@ ios/Flutter/ephemeral/
 ios/Flutter/Generated.xcconfig
 ios/Flutter/flutter_export_environment.sh
 # pubspec.lock deve ser versionado quando existir
+
+# Frontend TypeScript
+frontend/node_modules/
+frontend/dist/
