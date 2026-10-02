@@ -1,4 +1,5 @@
-import { RefreshCw, Route } from 'lucide-react'
+import { RefreshCw, Route, Trash2 } from 'lucide-react'
+import { useState } from 'react'
 import type { Ride } from '../lib/rides'
 import { rideToInput } from '../lib/rides'
 import { calculateDriverProfit, formatBRL } from '../utils/calculations'
@@ -8,9 +9,13 @@ type HistoryScreenProps = {
   loading: boolean
   error: string
   onRefresh: () => void
+  onClear: () => Promise<boolean>
+  clearing: boolean
+  clearStatus: { type: 'success' | 'error'; message: string } | null
 }
 
-export function HistoryScreen({ rides, loading, error, onRefresh }: HistoryScreenProps) {
+export function HistoryScreen({ rides, loading, error, onRefresh, onClear, clearing, clearStatus }: HistoryScreenProps) {
+  const [confirmingClear, setConfirmingClear] = useState(false)
   const weekStart = new Date()
   weekStart.setHours(0, 0, 0, 0)
   weekStart.setDate(weekStart.getDate() - 6)
@@ -30,7 +35,7 @@ export function HistoryScreen({ rides, loading, error, onRefresh }: HistoryScree
   const highestDay = Math.max(1, ...dailyProfit.map((value) => Math.max(0, value)))
 
   return <section className="secondary-page history-page">
-    <header className="secondary-heading"><div><p className="eyebrow">HISTÓRICO</p><h1>Suas jornadas,<br /><em>seus resultados.</em></h1><p>Confira o que cada dia deixou no seu bolso.</p></div><button className="history-filter" onClick={onRefresh} disabled={loading}><RefreshCw size={17} /> Atualizar</button></header>
+    <header className="secondary-heading"><div><p className="eyebrow">HISTÓRICO</p><h1>Suas jornadas,<br /><em>seus resultados.</em></h1><p>Confira o que cada dia deixou no seu bolso.</p></div><button className="history-filter" onClick={onRefresh} disabled={loading || clearing}><RefreshCw size={17} /> Atualizar</button></header>
     <section className="history-overview"><article><span>Lucro nos últimos 7 dias</span><strong>{formatBRL(weeklyProfit)}</strong><p>{weeklyRides.length} {weeklyRides.length === 1 ? 'jornada salva' : 'jornadas salvas'} nesse período</p></article><div className="mini-bars" aria-label="Lucro dos últimos 7 dias">{dailyProfit.map((value, index) => <i key={index} className={value > 0 ? 'active' : ''} style={{ height: `${Math.max(12, Math.max(0, value) / highestDay * 100)}%` }} />)}</div></section>
     <section className="history-list" aria-label="Lista de jornadas">
       <div className="history-list-head"><span>JORNADA</span><span>RECEITA</span><span>LUCRO LÍQUIDO</span><span /></div>
@@ -48,5 +53,18 @@ export function HistoryScreen({ rides, loading, error, onRefresh }: HistoryScree
         </article>
       })}
     </section>
+    <section className="history-clear" aria-label="Apagar histórico">
+      <div><strong>Zerar meu histórico</strong><p>Apaga todas as jornadas salvas nesta conta, sem afetar outros motoristas.</p></div>
+      <button type="button" className="history-clear-button" disabled={loading || clearing || rides.length === 0} onClick={() => setConfirmingClear(true)}><Trash2 size={16} /> Zerar histórico</button>
+    </section>
+    {confirmingClear && <div className="history-confirm" role="group" aria-labelledby="history-confirm-title" aria-describedby="history-confirm-description">
+      <strong id="history-confirm-title">Apagar todas as suas jornadas?</strong>
+      <p id="history-confirm-description">Esta ação é permanente e não pode ser desfeita. Somente o histórico da sua conta será apagado.</p>
+      <div className="history-confirm-actions">
+        <button type="button" disabled={clearing} onClick={() => setConfirmingClear(false)}>Cancelar</button>
+        <button type="button" className="history-confirm-delete" disabled={clearing} onClick={() => { void onClear().then((cleared) => { if (cleared) setConfirmingClear(false) }) }}>{clearing ? 'Apagando...' : 'Sim, apagar tudo'}</button>
+      </div>
+    </div>}
+    {clearStatus && <p className={`history-clear-status ${clearStatus.type}`} role={clearStatus.type === 'error' ? 'alert' : 'status'}>{clearStatus.message}</p>}
   </section>
 }
