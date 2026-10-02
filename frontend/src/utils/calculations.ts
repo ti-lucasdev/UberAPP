@@ -23,7 +23,7 @@ export function calculateDriverProfit(input: CalculationInput): CalculationResul
   const grossRevenue = input.uber + input.ninetyNine + input.particular + input.inDriver
   const estimatedLiters = input.vehicleAverage > 0 ? input.kilometers / input.vehicleAverage : 0
   const fuelCost = estimatedLiters * input.fuelPrice
-  const costPerKilometer = input.kilometers > 0 ? fuelCost / input.kilometers : 0
+  const valuePerKilometer = input.kilometers > 0 ? grossRevenue / input.kilometers : 0
 
-  return { grossRevenue, estimatedLiters, fuelCost, costPerKilometer, netValue: grossRevenue - fuelCost }
+  return { grossRevenue, kilometers: input.kilometers, estimatedLiters, fuelCost, valuePerKilometer, netValue: grossRevenue - fuelCost }
 }

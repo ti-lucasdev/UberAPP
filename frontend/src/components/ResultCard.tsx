@@ -9,7 +9,7 @@ export function ResultCard({ result, source, kilometers }: { result: Calculation
     <div className="result-rows">
       <div className="result-row"><span><i><Fuel size={17} /></i>Gasto com combustível</span><b>− {formatBRL(result.fuelCost)}</b></div>
       <div className="result-row"><span><i><Route size={17} /></i>Distância percorrida</span><b>{kilometers.toLocaleString('pt-BR')} km</b></div>
-      <div className="result-row"><span><i><Route size={17} /></i>Custo por km</span><b>{formatBRL(result.costPerKilometer)} <small>/ km</small></b></div>
+      <div className="result-row"><span><i><Route size={17} /></i>Valor por km</span><b>{formatBRL(result.valuePerKilometer)} <small>/ km</small></b></div>
     </div>
     <div className="result-divider" />
     <div className="net-value"><span>Valor líquido</span><strong>{formatBRL(result.netValue)}</strong></div>
