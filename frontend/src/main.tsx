@@ -1,12 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App'
-import './styles.css'
-import './reference.css'
-import './screens.css'
-import './responsive.css'
-import './mobile-screens.css'
+import './design.css'
 import './brand.css'
+import './viewport.css'
+import './ambient.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -1,0 +1,40 @@
+/* Three composited gradients: no canvas, timers or per-frame JavaScript. */
+.app-shell { position: relative; isolation: isolate; }
+.ambient-background { --ambient-mint: var(--brand-mint-rgb); --ambient-navy: var(--brand-navy-rgb); --ambient-green: var(--brand-green-rgb); position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; contain: strict; opacity: .48; }
+.ambient-glow { position: absolute; width: min(76vw, 1100px); aspect-ratio: 1; border-radius: 50%; animation: ambient-flow 12s ease-in-out infinite alternate; }
+.ambient-glow-mint { left: 12%; top: -36%; background: radial-gradient(circle, rgb(var(--ambient-mint) / .28) 0%, rgb(var(--ambient-mint) / .12) 32%, transparent 69%); }
+.ambient-glow-blue { right: -20%; bottom: -40%; background: radial-gradient(circle, rgb(var(--ambient-navy) / .12) 0%, rgb(var(--ambient-navy) / .04) 35%, transparent 69%); animation-duration: 16s; animation-delay: -6s; animation-direction: alternate-reverse; }
+.ambient-glow-warm { left: 25%; bottom: -50%; width: min(65vw, 850px); background: radial-gradient(circle, rgb(var(--ambient-green) / .12) 0%, transparent 67%); animation-duration: 38s; animation-delay: -19s; }
+@keyframes ambient-flow {
+  from { transform: translate3d(-3vw, -2vh, 0) scale(.94); opacity: .65; }
+  to { transform: translate3d(5vw, 6vh, 0) scale(1.08); opacity: 1; }
+}
+.floating-shape { position: absolute; width: clamp(190px, 19vw, 330px); aspect-ratio: 1; border: 1px solid #ffffffa6; border-radius: 50%; animation: object-float 14s ease-in-out infinite; }
+.floating-coins { left: 43%; top: 5%; background: radial-gradient(circle at 28% 23%, #ffffffb3, rgb(var(--ambient-mint) / .22) 30%, rgb(var(--ambient-green) / .16) 75%, rgb(var(--ambient-mint) / .2)); box-shadow: inset 7px 9px 24px #ffffff80, inset -14px -18px 34px rgb(var(--ambient-green) / .08), 0 25px 65px rgb(var(--ambient-green) / .04); }
+.floating-coins::after { content: ''; position: absolute; inset: 10%; border-top: 2px solid #ffffffbf; border-radius: 50%; transform: rotate(-30deg); }
+.floating-navigation { right: -7%; top: 45%; width: clamp(250px, 28vw, 460px); background: radial-gradient(circle at 28% 25%, #ffffffb3, rgb(var(--ambient-mint) / .16) 30%, rgb(var(--ambient-navy) / .12) 65%, rgb(var(--ambient-navy) / .2)); box-shadow: inset 10px 12px 32px #ffffff80, inset -20px -22px 45px rgb(var(--ambient-navy) / .08), 0 25px 70px rgb(var(--ambient-navy) / .04); animation-delay: -5s; animation-duration: 18s; }
+.floating-growth { left: 39%; bottom: -22%; width: clamp(240px, 25vw, 400px); background: radial-gradient(circle at 32% 24%, #ffffffa6, rgb(var(--ambient-mint) / .2) 42%, rgb(var(--ambient-green) / .12) 75%); box-shadow: inset 8px 12px 32px #ffffff80, 0 25px 65px rgb(var(--ambient-green) / .04); animation-delay: -9s; animation-duration: 22s; }
+.floating-ring { left: 16%; top: 43%; width: clamp(190px, 20vw, 310px); border: 16px solid rgb(var(--ambient-mint) / .13); background: transparent; box-shadow: inset 2px 3px 10px #ffffff80; animation-delay: -3s; animation-duration: 20s; }
+/* A quiet road motif connects the ambient shapes to the driving theme. */
+.floating-ring::before { content: ''; position: absolute; inset: -9px; border: 1px dashed rgb(var(--ambient-green) / .28); border-radius: 50%; }
+.floating-ring::after { content: ''; position: absolute; top: 12%; right: 9%; width: 8px; height: 8px; border-radius: 50%; background: rgb(var(--ambient-green) / .5); box-shadow: 0 0 0 5px rgb(var(--ambient-mint) / .2); }
+@keyframes object-float {
+  0%, 100% { transform: translate3d(-12px, 14px, 0) rotate(-8deg) scale(.96); }
+  50% { transform: translate3d(26px, -30px, 0) rotate(8deg) scale(1.04); }
+}
+.ambient-background[data-paused="true"] .ambient-glow,
+.ambient-background[data-paused="true"] .floating-shape { animation-play-state: paused; }
+@media (max-width: 640px) {
+  .ambient-glow { width: 115vw; }
+  .ambient-glow-mint { left: -30%; top: -8%; }
+  .ambient-glow-blue { right: -45%; bottom: 0; }
+  .ambient-glow-warm { display: none; }
+  .floating-coins { width: 190px; left: auto; right: -65px; top: 9%; }
+  .floating-navigation { width: 240px; right: -135px; top: 65%; }
+  .floating-ring { width: 180px; left: -110px; top: 44%; border-width: 16px; }
+  .floating-growth { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ambient-glow { animation: none; opacity: .7; }
+  .floating-shape { animation: none; }
+}

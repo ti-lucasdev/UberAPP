@@ -8,7 +8,7 @@ export function SummaryScreen({ result }: { result: CalculationResult }) {
     <header className="secondary-heading"><div><p className="eyebrow">RESUMO</p><h1>Seu lucro<br /><em>em perspectiva.</em></h1><p>Uma visão simples do resultado que sua jornada trouxe.</p></div><span className="period-pill">Esta jornada <ArrowUpRight size={15} /></span></header>
     <div className="summary-layout">
       <article className="profit-hero"><div><span className="card-label">LUCRO LÍQUIDO ESTIMADO</span><strong>{formatBRL(result.netValue)}</strong><p><TrendingUp size={16} /> {result.grossRevenue > 0 ? Math.round((result.netValue / result.grossRevenue) * 100) : 0}% da receita ficou no bolso</p></div><img src="/assets/money-illustration.png" alt="Notas e moedas" /></article>
-      <article className="journey-card"><span className="card-label">JORNADA ATUAL</span><h2>Você rodou com<br />resultado positivo.</h2><div className="journey-route"><i /><span>Saída</span><b>{result.estimatedLiters.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}L usados</b><span>Chegada</span><i /></div></article>
+      <article className="journey-card"><span className="card-label">JORNADA ATUAL</span><h2>{result.netValue > 0 ? 'Seu giro rendeu.' : result.netValue < 0 ? 'Hora de rever os custos.' : 'Todo giro começa aqui.'}<br /><em>{result.netValue > 0 ? 'Siga nesse caminho.' : 'Acompanhe cada detalhe.'}</em></h2><div className="journey-route"><i /><span>Saída</span><b>{result.estimatedLiters.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}L usados</b><span>Chegada</span><i /></div></article>
     </div>
     <section className="summary-metrics">
       <Metric icon={<CircleDollarSign />} label="Receita bruta" value={formatBRL(result.grossRevenue)} />
