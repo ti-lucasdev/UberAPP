@@ -13,8 +13,8 @@ export function SummaryScreen({ result }: { result: CalculationResult }) {
     <section className="summary-metrics">
       <Metric icon={<CircleDollarSign />} label="Receita bruta" value={formatBRL(result.grossRevenue)} />
       <Metric icon={<Fuel />} label="Combustível" value={formatBRL(result.fuelCost)} />
-      <Metric icon={<Route />} label="Custo por km" value={`${formatBRL(result.costPerKilometer)}/km`} />
-      <Metric icon={<CarFront />} label="Distância" value={`${result.estimatedLiters ? Math.round(result.fuelCost / result.costPerKilometer) : 0} km`} />
+      <Metric icon={<Route />} label="Valor por km" value={`${formatBRL(result.valuePerKilometer)}/km`} />
+      <Metric icon={<CarFront />} label="Distância" value={`${result.kilometers.toLocaleString('pt-BR')} km`} />
     </section>
   </section>
 }

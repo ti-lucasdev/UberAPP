@@ -14,8 +14,9 @@ export type CalculationInput = {
 
 export type CalculationResult = {
   grossRevenue: number
+  kilometers: number
   estimatedLiters: number
   fuelCost: number
-  costPerKilometer: number
+  valuePerKilometer: number
   netValue: number
 }

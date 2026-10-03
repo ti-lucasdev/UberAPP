@@ -1,6 +1,13 @@
 /* Three composited gradients: no canvas, timers or per-frame JavaScript. */
 .app-shell { position: relative; isolation: isolate; }
-.ambient-background { --ambient-mint: var(--brand-mint-rgb); --ambient-navy: var(--brand-navy-rgb); --ambient-green: var(--brand-green-rgb); position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; contain: strict; opacity: .48; }
+.ambient-background { --ambient-mint: var(--brand-mint-rgb); --ambient-navy: var(--brand-navy-rgb); --ambient-green: var(--brand-green-rgb); position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; contain: strict; opacity: .56; }
+.ambient-grid { position: absolute; inset: -10%; opacity: .32; background-image: linear-gradient(rgb(var(--ambient-mint) / .08) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--ambient-mint) / .08) 1px, transparent 1px); background-size: 58px 58px; mask-image: radial-gradient(ellipse at center, #000 0%, transparent 75%); transform: perspective(700px) rotateX(58deg) translateY(22%); transform-origin: center bottom; animation: grid-breathe 14s ease-in-out infinite alternate; }
+.ambient-scanline { position: absolute; inset: -20% 0; height: 42%; background: linear-gradient(180deg, transparent, rgb(var(--ambient-mint) / .09), transparent); filter: blur(12px); animation: scanline-drift 18s ease-in-out infinite; }
+.ambient-particles { position: absolute; inset: 0; }
+.ambient-particles i { position: absolute; left: var(--particle-x); top: var(--particle-y); width: var(--particle-size); height: var(--particle-size); border-radius: 50%; background: rgb(var(--ambient-mint) / .5); box-shadow: 0 0 14px rgb(var(--ambient-mint) / .45); animation: particle-blink 5s var(--particle-delay) ease-in-out infinite; }
+@keyframes grid-breathe { from { transform: perspective(700px) rotateX(58deg) translate3d(-1%, 22%, 0) scale(.98); opacity: .45; } to { transform: perspective(700px) rotateX(58deg) translate3d(1%, 18%, 0) scale(1.04); opacity: .9; } }
+@keyframes scanline-drift { 0%, 100% { transform: translateY(-35%) rotate(-3deg); opacity: 0; } 35%, 65% { opacity: 1; } 100% { transform: translateY(280%) rotate(3deg); } }
+@keyframes particle-blink { 0%, 100% { opacity: .1; transform: scale(.7); } 45% { opacity: .75; transform: scale(1.25); } }
 .ambient-glow { position: absolute; width: min(76vw, 1100px); aspect-ratio: 1; border-radius: 50%; animation: ambient-flow 12s ease-in-out infinite alternate; }
 .ambient-glow-mint { left: 12%; top: -36%; background: radial-gradient(circle, rgb(var(--ambient-mint) / .28) 0%, rgb(var(--ambient-mint) / .12) 32%, transparent 69%); }
 .ambient-glow-blue { right: -20%; bottom: -40%; background: radial-gradient(circle, rgb(var(--ambient-navy) / .12) 0%, rgb(var(--ambient-navy) / .04) 35%, transparent 69%); animation-duration: 16s; animation-delay: -6s; animation-direction: alternate-reverse; }
@@ -23,8 +30,13 @@
   50% { transform: translate3d(26px, -30px, 0) rotate(8deg) scale(1.04); }
 }
 .ambient-background[data-paused="true"] .ambient-glow,
-.ambient-background[data-paused="true"] .floating-shape { animation-play-state: paused; }
+.ambient-background[data-paused="true"] .floating-shape,
+.ambient-background[data-paused="true"] .ambient-grid,
+.ambient-background[data-paused="true"] .ambient-scanline,
+.ambient-background[data-paused="true"] .ambient-particles i { animation-play-state: paused; }
 @media (max-width: 640px) {
+  .ambient-grid { opacity: .18; background-size: 42px 42px; }
+  .ambient-scanline { display: none; }
   .ambient-glow { width: 115vw; }
   .ambient-glow-mint { left: -30%; top: -8%; }
   .ambient-glow-blue { right: -45%; bottom: 0; }
@@ -36,5 +48,5 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .ambient-glow { animation: none; opacity: .7; }
-  .floating-shape { animation: none; }
+  .floating-shape, .ambient-grid, .ambient-scanline, .ambient-particles i { animation: none; }
 }

@@ -32,6 +32,7 @@ test('soma todas as quatro fontes de receita', () => {
     mediaVeiculo: 10,
   })
   assert.equal(result.valorBruto, 250)
+  assert.equal(result.valorKm, 2.5)
   assert.equal(result.valorLiquido, 200)
 })
 

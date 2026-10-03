@@ -46,6 +46,8 @@
   .secondary-heading { display: flex; margin-bottom: 24px; }
   .summary-layout { grid-template-columns: 1.2fr 1fr; }
   .settings-layout { grid-template-columns: .8fr 1.2fr; }
+  .history-list { max-height: min(34vh, 360px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #98b9ab transparent; }
+  .history-list-head { position: sticky; top: 0; z-index: 1; }
 }
 @media (min-width: 760px) and (max-height: 780px) {
   .hero { min-height: 210px; margin-bottom: 14px; }
