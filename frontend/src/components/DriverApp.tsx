@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { BarChart3, History, Home, Menu, Save, Settings, Trash2 } from 'lucide-react'
+import { BarChart3, FileChartColumn, History, Home, Menu, Save, Settings, Trash2 } from 'lucide-react'
 import { OperatingCosts } from './OperatingCosts'
 import { ResultCard } from './ResultCard'
 import { RevenueSection } from './RevenueSection'
@@ -10,6 +10,7 @@ import { AmbientBackground } from './AmbientBackground'
 import { SummaryScreen } from './SummaryScreen'
 import { HistoryScreen } from './HistoryScreen'
 import { SettingsScreen } from './SettingsScreen'
+import { ReportScreen } from './ReportScreen'
 import { LogoMark } from './AppLogo'
 import { supabase } from '../lib/supabase'
 import type { Ride } from '../lib/rides'
@@ -17,7 +18,7 @@ import { calculateDriverProfit, maskCurrency, parseDecimal } from '../utils/calc
 import type { CalculationInput, RevenueValues } from '../types'
 
 const emptyRevenues: RevenueValues = { uber: '', ninetyNine: '', particular: '', inDriver: '' }
-const navigationByHash: Record<string, string> = { '#resumo': 'Resumo', '#historico': 'Histórico', '#configuracoes': 'Configurações' }
+const navigationByHash: Record<string, string> = { '#resumo': 'Resumo', '#relatorio': 'Relatório', '#historico': 'Histórico', '#configuracoes': 'Configurações' }
 
 function navigationFromHash() {
   return navigationByHash[window.location.hash] ?? 'Nova jornada'
@@ -45,6 +46,11 @@ export function DriverApp({ userId, email, demoMode = false, onDemoLogout }: { u
   const [clearStatus, setClearStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const accountName = email.includes('@') ? email.split('@')[0] : 'Motorista'
   const accountInitials = accountName.split(/[ ._-]+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase()).join('') || 'GC'
+  const rentalStorageKey = `giro-certo:weekly-rental:${userId}`
+  const [weeklyRental, setWeeklyRental] = useState(() => {
+    const stored = Number(window.localStorage.getItem(rentalStorageKey))
+    return Number.isFinite(stored) && stored >= 0 ? stored : 0
+  })
 
   const input = useMemo<CalculationInput>(() => ({
     uber: parseDecimal(revenues.uber), ninetyNine: parseDecimal(revenues.ninetyNine), particular: parseDecimal(revenues.particular), inDriver: parseDecimal(revenues.inDriver),
@@ -101,6 +107,12 @@ export function DriverApp({ userId, email, demoMode = false, onDemoLogout }: { u
     window.location.hash = hash
     setActiveNav(item)
     setMenuOpen(false)
+  }
+
+  const saveWeeklyRental = (value: number) => {
+    const safeValue = Number.isFinite(value) && value >= 0 ? value : 0
+    setWeeklyRental(safeValue)
+    window.localStorage.setItem(rentalStorageKey, String(safeValue))
   }
 
   async function saveRide() {
@@ -264,13 +276,13 @@ export function DriverApp({ userId, email, demoMode = false, onDemoLogout }: { u
           </div>
           <div className="result-column"><div key={resultHighlight} className={resultHighlight ? 'result-feedback' : ''}><ResultCard result={result} source={revenueSource} kilometers={input.kilometers} /></div><TipCard /></div>
         </section>
-      </> : activeNav === 'Resumo' ? <SummaryScreen result={result} /> : activeNav === 'Histórico' ? <HistoryScreen rides={rides} loading={ridesLoading} error={ridesError} onRefresh={() => { void loadRides() }} onClear={clearHistory} clearing={clearingHistory} clearStatus={clearStatus} /> : <SettingsScreen />}
+      </> : activeNav === 'Resumo' ? <SummaryScreen result={result} /> : activeNav === 'Relatório' ? <ReportScreen rides={rides} loading={ridesLoading} error={ridesError} weeklyRental={weeklyRental} /> : activeNav === 'Histórico' ? <HistoryScreen rides={rides} loading={ridesLoading} error={ridesError} onRefresh={() => { void loadRides() }} onClear={clearHistory} clearing={clearingHistory} clearStatus={clearStatus} /> : <SettingsScreen weeklyRental={weeklyRental} onSave={saveWeeklyRental} />}
       </div>
       <footer className="page-footer"><LogoMark className="footer-mark" /><span>Menos contas na cabeça. Mais foco no caminho.</span></footer>
       </div>
     </main>
     <nav className="bottom-nav" aria-label="Navegação no celular">
-      {[{ label: 'Nova jornada', short: 'Jornada', icon: Home }, { label: 'Resumo', short: 'Resumo', icon: BarChart3 }, { label: 'Histórico', short: 'Histórico', icon: History }, { label: 'Configurações', short: 'Ajustes', icon: Settings }].map(({ label, short, icon: Icon }) => <button key={label} onClick={() => navigate(label)} className={activeNav === label ? 'active' : ''} aria-current={activeNav === label ? 'page' : undefined}><Icon size={20} /><span>{short}</span></button>)}
+      {[{ label: 'Nova jornada', short: 'Jornada', icon: Home }, { label: 'Resumo', short: 'Resumo', icon: BarChart3 }, { label: 'Relatório', short: 'Relatório', icon: FileChartColumn }, { label: 'Histórico', short: 'Histórico', icon: History }, { label: 'Configurações', short: 'Ajustes', icon: Settings }].map(({ label, short, icon: Icon }) => <button key={label} onClick={() => navigate(label)} className={activeNav === label ? 'active' : ''} aria-current={activeNav === label ? 'page' : undefined}><Icon size={20} /><span>{short}</span></button>)}
     </nav>
   </div>
 }

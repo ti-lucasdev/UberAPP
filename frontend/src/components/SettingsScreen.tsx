@@ -1,22 +1,24 @@
-import { Bell, Car, Check, Fuel, Gauge, ShieldCheck } from 'lucide-react'
-import { useState } from 'react'
+import { CarFront, Check, ShieldCheck } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { formatBRL, maskCurrency, parseDecimal } from '../utils/calculations'
 
-export function SettingsScreen() {
-  const [vehicle, setVehicle] = useState('Meu veículo')
-  const [fuel, setFuel] = useState('5,89')
-  const [average, setAverage] = useState('11')
+export function SettingsScreen({ weeklyRental, onSave }: { weeklyRental: number; onSave: (value: number) => void }) {
+  const [rental, setRental] = useState(weeklyRental > 0 ? weeklyRental.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '')
   const [saved, setSaved] = useState(false)
 
+  useEffect(() => {
+    setRental(weeklyRental > 0 ? weeklyRental.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '')
+  }, [weeklyRental])
+
   return <section className="secondary-page settings-page">
-    <header className="secondary-heading"><div><p className="eyebrow">CONFIGURAÇÕES</p><h1>Do seu jeito,<br /><em>do seu giro.</em></h1><p>Prévia dos dados do veículo para uma próxima etapa.</p></div><span className="settings-badge"><ShieldCheck size={18} /> Prévia nesta tela</span></header>
-    <section className="settings-layout">
-      <article className="vehicle-preview"><span className="vehicle-icon"><Car size={28} /></span><p>VEÍCULO ATIVO</p><h2>{vehicle || 'Meu veículo'}</h2><div><span><Fuel size={16} /> Combustível <small className="mobile-preview-value">R$ {fuel}/L</small></span><b>R$ {fuel}/L</b></div><div><span><Gauge size={16} /> Consumo médio <small className="mobile-preview-value">{average} km/L</small></span><b>{average} km/L</b></div></article>
-      <form className="settings-form" onSubmit={(event) => { event.preventDefault(); setSaved(true) }}>
-        <div className="settings-form-head"><span><Car size={19} /></span><div><h2>Dados do veículo</h2><p>Esses dados ainda não são salvos no banco.</p></div></div>
-        <label>Nome do veículo<input value={vehicle} onChange={(event) => { setVehicle(event.target.value); setSaved(false) }} /></label>
-        <div className="settings-fields"><label>Preço do combustível<div><i>R$</i><input value={fuel} onChange={(event) => { setFuel(event.target.value); setSaved(false) }} /><b>/ litro</b></div></label><label>Média do veículo<div><input value={average} onChange={(event) => { setAverage(event.target.value); setSaved(false) }} /><b>km/L</b></div></label></div>
-        <div className="notification-row"><span><Bell size={18} /></span><div><strong>Lembrete de jornada</strong><p>Receba um lembrete para calcular seu lucro.</p></div><button type="button" className="toggle on" aria-label="Lembrete ativo"><i /></button></div>
-        <button className="save-settings" type="submit"><Check size={17} /> {saved ? 'Prévia atualizada' : 'Atualizar prévia'}</button>
+    <header className="secondary-heading"><div><p className="eyebrow">CONFIGURAÇÕES</p><h1>Seu custo fixo,<br /><em>no cálculo certo.</em></h1><p>Informe o valor semanal pago pelo aluguel do carro.</p></div><span className="settings-badge"><ShieldCheck size={18} /> Salvo neste aparelho</span></header>
+    <section className="settings-layout rental-settings-layout">
+      <article className="vehicle-preview rental-preview"><span className="vehicle-icon"><CarFront size={28} /></span><p>ALUGUEL SEMANAL</p><h2>{formatBRL(weeklyRental)}</h2><div><span>O relatório divide esse valor pelos dias rodados de cada semana.</span></div></article>
+      <form className="settings-form rental-settings-form" onSubmit={(event) => { event.preventDefault(); onSave(parseDecimal(rental)); setSaved(true) }}>
+        <div className="settings-form-head"><span><CarFront size={19} /></span><div><h2>Aluguel do carro</h2><p>Valor total cobrado por semana.</p></div></div>
+        <label>Valor semanal<div className="rental-input"><i>R$</i><input inputMode="decimal" placeholder="0,00" value={rental} onChange={(event) => { setRental(maskCurrency(event.target.value)); setSaved(false) }} /><b>/ semana</b></div></label>
+        <p className="rental-help">Exemplo: se o aluguel é R$ 700 e você rodou 5 dias na semana, o relatório considera R$ 140 por dia rodado.</p>
+        <button className="save-settings" type="submit"><Check size={17} /> {saved ? 'Valor salvo' : 'Salvar aluguel'}</button>
       </form>
     </section>
   </section>

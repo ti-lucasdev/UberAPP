@@ -1,4 +1,4 @@
-import { BarChart3, History, Home, LogOut, Settings, X } from 'lucide-react'
+import { BarChart3, FileChartColumn, History, Home, LogOut, Settings, X } from 'lucide-react'
 import { AppLogo } from './AppLogo'
 import { useEffect, useRef, useState } from 'react'
 
@@ -14,6 +14,7 @@ type SidebarProps = {
 const menuItems = [
   { label: 'Nova jornada', icon: Home },
   { label: 'Resumo', icon: BarChart3 },
+  { label: 'Relatório', icon: FileChartColumn },
   { label: 'Histórico', icon: History },
 ]
 
