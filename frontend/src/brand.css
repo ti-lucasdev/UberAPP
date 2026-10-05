@@ -33,6 +33,20 @@
 
 .clear-action::before { content: none; }
 
+/* Searchable, read-only journey history. */
+.history-search { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: end; gap: 18px; margin-bottom: 14px; padding: 16px 18px; border: 1px solid #dfe8ee; border-radius: 17px; background: #fff; }
+.history-search-title { display: flex; align-items: center; gap: 10px; min-width: 175px; color: #0b9e7d; }
+.history-search-title > div { display: grid; gap: 2px; }
+.history-search-title strong { color: #18344e; font-size: 13px; }
+.history-search-title small { color: #788a9b; font-size: 9px; }
+.history-search-fields { display: grid; grid-template-columns: 1.15fr .8fr 1.15fr .8fr; gap: 10px; }
+.history-search-fields label { display: grid; gap: 5px; color: #6f8294; font-size: 9px; font-weight: 800; letter-spacing: .3px; text-transform: uppercase; }
+.history-search-fields input { box-sizing: border-box; width: 100%; height: 39px; padding: 0 10px; border: 1px solid #dce5eb; border-radius: 9px; outline: 0; background: #f9fbfc; color: #17334e; font: inherit; font-size: 11px; font-weight: 700; text-transform: none; }
+.history-search-fields input:focus { border-color: #19b993; box-shadow: 0 0 0 3px rgba(25, 185, 147, .1); }
+.history-clear-filters { display: inline-flex; align-items: center; justify-content: center; gap: 5px; height: 39px; padding: 0 11px; border: 0; border-radius: 9px; background: #eef5f7; color: #526d7e; font-size: 10px; font-weight: 800; white-space: nowrap; }
+.history-gross-total { padding-left: 30px; border-left: 1px solid #bfe8dc; text-align: right; }
+.history-gross-total strong { font-size: 24px; letter-spacing: -1px; }
+
 /* Reports and the single rental setting. */
 .report-period { display: inline-flex; gap: 4px; margin-top: 13px; padding: 4px; border: 1px solid #d9e6ee; border-radius: 12px; background: #fff; }
 .report-period button { min-width: 104px; height: 38px; padding: 0 16px; border: 0; border-radius: 9px; background: transparent; color: #667d93; font-size: 13px; font-weight: 800; }
@@ -92,9 +106,17 @@
   .report-heading { display: flex; align-items: flex-end; gap: 20px; }
   .report-metrics { grid-template-columns: repeat(2, 1fr); }
   .rental-settings-layout { grid-template-columns: 1fr; }
+  .history-search { grid-template-columns: 1fr; align-items: stretch; }
+  .history-search-fields { grid-template-columns: repeat(4, 1fr); }
+  .history-clear-filters { justify-self: start; }
 }
 
 @media (max-width: 720px) {
+  .history-search { margin-top: 14px; padding: 16px; }
+  .history-search-fields { grid-template-columns: 1fr 1fr; }
+  .history-clear-filters { width: 100%; }
+  .history-gross-total { padding-left: 14px; }
+  .history-gross-total strong { font-size: 18px; }
   .report-page { width: calc(100vw - 32px); max-width: 100%; min-width: 0; }
   .report-heading { display: block; padding: 22px 20px; border-radius: 22px; background: linear-gradient(145deg, #082740, #104968); color: #fff; }
   .report-heading .eyebrow { color: #70e7cb; }

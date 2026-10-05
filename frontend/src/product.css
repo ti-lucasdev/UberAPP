@@ -32,7 +32,7 @@ button:focus-visible { outline: 3px solid #38b493; outline-offset: 3px; }
   .workspace-user small { font-size: 9px; }.workspace-user .workspace-avatar { flex-shrink: 0; }
   .sidebar { overflow-y: auto; padding-bottom: max(20px, env(safe-area-inset-bottom)); }
   .close-menu { min-width: 44px; min-height: 44px; }
-  .history-clear-button, .history-filter, .history-confirm button { min-height: 44px; }
+  .history-filter { min-height: 44px; }
 }
 @media (min-width: 641px) and (max-width: 759px) {
   .calculation-layout, .summary-layout, .settings-layout { grid-template-columns: 1fr; }

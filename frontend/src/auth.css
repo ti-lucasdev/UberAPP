@@ -56,25 +56,9 @@
 .workspace-user small { display: inline-flex; align-items: center; gap: 6px; color: #71859a; font-size: 10px; font-weight: 700; }
 .signout-link { margin-top: 3px; }
 .save-ride-area { display: grid; gap: 7px; margin-top: 13px; }
-.save-ride-button { width: 100%; min-height: 45px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 1px solid #2fbea1; border-radius: 11px; background: #e9fff7; color: #087c66; font-size: 13px; font-weight: 800; }
-.save-ride-button:hover:not(:disabled) { background: #d6f9e9; }
-.save-ride-button:disabled { opacity: .68; cursor: default; }
 .save-feedback { margin: 0; font-size: 12px; font-weight: 600; }
 .save-feedback.success { color: #0a8068; }
 .history-message { padding: 25px; border-top: 1px solid #edf1f4; color: #627a90; font-size: 13px; line-height: 1.5; }
-.history-clear { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin: 18px 0 8px; padding: 18px 22px; border: 1px solid #f0d6d6; border-radius: 16px; background: #fffafa; }
-.history-clear strong, .history-confirm strong { color: #713238; font-size: 14px; }
-.history-clear p, .history-confirm p { margin: 5px 0 0; color: #6f6970; font-size: 12px; line-height: 1.5; }
-.history-clear-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex: 0 0 auto; min-height: 42px; padding: 0 15px; border: 1px solid #d77478; border-radius: 10px; background: #fff; color: #a33137; font-size: 12px; font-weight: 800; }
-.history-clear-button:hover:not(:disabled) { background: #fff0f0; }
-.history-clear-button:disabled, .history-confirm button:disabled { opacity: .55; cursor: default; }
-.history-confirm { margin: 10px 0; padding: 18px 22px; border: 1px solid #db9a9d; border-radius: 16px; background: #fff3f3; }
-.history-confirm-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 16px; }
-.history-confirm button { min-height: 41px; padding: 0 14px; border: 1px solid #d9c7c8; border-radius: 9px; background: #fff; color: #594347; font-size: 12px; font-weight: 800; }
-.history-confirm .history-confirm-delete { border-color: #af383f; background: #af383f; color: #fff; }
-.history-clear-status { margin: 10px 0 22px; font-size: 12px; font-weight: 700; }
-.history-clear-status.success { color: #087c66; }
-.history-clear-status.error { color: #a92e31; }
 
 @media (max-width: 640px) {
   .auth-shell { padding: 16px; }
@@ -85,11 +69,6 @@
   .auth-trust-row { align-items: flex-start; flex-direction: column; gap: 6px; }
   .auth-content { padding: 30px 25px 35px; }
   .auth-content h1 { font-size: 39px; }
-  .history-clear { display: grid; padding: 17px; }
-  .history-clear-button { width: 100%; }
-  .history-confirm { padding: 17px; }
-  .history-confirm-actions { display: grid; grid-template-columns: 1fr 1fr; }
-  .history-confirm-actions button { padding: 0 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .auth-card, .auth-content, .auth-brand p, .auth-brand-insights span, .auth-brand-glow, .auth-brand::after, .auth-orbit { animation: none; }

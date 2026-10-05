@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { BarChart3, FileChartColumn, History, Home, Menu, Save, Settings, Trash2 } from 'lucide-react'
+import { BarChart3, FileChartColumn, History, Home, Menu, Settings, Trash2 } from 'lucide-react'
 import { OperatingCosts } from './OperatingCosts'
 import { ResultCard } from './ResultCard'
 import { RevenueSection } from './RevenueSection'
@@ -42,8 +42,6 @@ export function DriverApp({ userId, email, demoMode = false, onDemoLogout }: { u
   const [saveError, setSaveError] = useState('')
   const [savedFingerprint, setSavedFingerprint] = useState<string | null>(null)
   const [sessionError, setSessionError] = useState('')
-  const [clearingHistory, setClearingHistory] = useState(false)
-  const [clearStatus, setClearStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
   const accountName = email.includes('@') ? email.split('@')[0] : 'Motorista'
   const accountInitials = accountName.split(/[ ._-]+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase()).join('') || 'GC'
   const rentalStorageKey = `giro-certo:weekly-rental:${userId}`
@@ -79,7 +77,7 @@ export function DriverApp({ userId, email, demoMode = false, onDemoLogout }: { u
         .select('id,user_id,created_at,uber,ninety_nine,particular,in_driver,kilometers,fuel_price,vehicle_average')
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
-        .limit(200)
+        .limit(1000)
       if (error) throw error
       setRides((data ?? []) as Ride[])
     } catch {
@@ -98,9 +96,10 @@ export function DriverApp({ userId, email, demoMode = false, onDemoLogout }: { u
 
   const updateRevenue = (key: keyof RevenueValues, value: string) => setRevenues((current) => ({ ...current, [key]: maskCurrency(value) }))
   const clearFields = () => { setRevenues(emptyRevenues); setKilometers(''); setFuelPrice(''); setVehicleAverage(''); setSavedFingerprint(null) }
-  const calculate = () => {
+  const calculateAndSave = () => {
     setResultHighlight((value) => value + 1)
     document.querySelector('.result-column')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'nearest' })
+    void saveRide()
   }
   const navigate = (item: string) => {
     const hash = Object.entries(navigationByHash).find(([, label]) => label === item)?.[0] ?? '#nova-jornada'
@@ -116,10 +115,9 @@ export function DriverApp({ userId, email, demoMode = false, onDemoLogout }: { u
   }
 
   async function saveRide() {
-    if (saving || ridesLoading || clearingHistory || savedFingerprint === inputFingerprint) return
+    if (saving || ridesLoading || savedFingerprint === inputFingerprint) return
     setSaveError('')
     setSaveMessage('')
-    setClearStatus(null)
     if (result.grossRevenue <= 0 || input.kilometers <= 0 || input.vehicleAverage <= 0) {
       setSaveError('Informe alguma receita, os quilômetros e a média do veículo antes de salvar.')
       return
@@ -165,35 +163,6 @@ export function DriverApp({ userId, email, demoMode = false, onDemoLogout }: { u
       setSaveError('Não foi possível salvar. Confira sua conexão e tente novamente.')
     } finally {
       setSaving(false)
-    }
-  }
-
-  async function clearHistory(): Promise<boolean> {
-    if (clearingHistory || ridesLoading || saving) return false
-    setClearingHistory(true)
-    setClearStatus(null)
-    if (demoMode) {
-      window.localStorage.removeItem('giro-certo-demo-rides')
-      setRides([])
-      setSavedFingerprint(null)
-      setSaveMessage('')
-      setClearStatus({ type: 'success', message: 'Seu histórico de demonstração foi zerado.' })
-      setClearingHistory(false)
-      return true
-    }
-    try {
-      const { error } = await supabase.from('rides').delete().eq('user_id', userId)
-      if (error) throw error
-      setRides([])
-      setSavedFingerprint(null)
-      setSaveMessage('')
-      setClearStatus({ type: 'success', message: 'Seu histórico foi zerado.' })
-      return true
-    } catch {
-      setClearStatus({ type: 'error', message: 'Não foi possível apagar o histórico. Confira sua conexão e tente novamente.' })
-      return false
-    } finally {
-      setClearingHistory(false)
     }
   }
 
@@ -267,16 +236,15 @@ export function DriverApp({ userId, email, demoMode = false, onDemoLogout }: { u
             <RevenueSection values={revenues} onChange={updateRevenue} />
             <div className="section-divider" />
             <OperatingCosts kilometers={kilometers} fuelPrice={fuelPrice} vehicleAverage={vehicleAverage} onKilometersChange={setKilometers} onFuelPriceChange={(value) => setFuelPrice(maskCurrency(value))} onAverageChange={setVehicleAverage} />
-            <div className="form-actions"><button className="clear-action" type="button" onClick={clearFields}><Trash2 size={16} />Limpar</button><button className="calculate-button" type="button" onClick={calculate}>Calcular lucro <span>›</span></button></div>
+            <div className="form-actions"><button className="clear-action" type="button" onClick={clearFields}><Trash2 size={16} />Limpar</button><button className="calculate-button" type="button" disabled={saving || ridesLoading || savedFingerprint === inputFingerprint} onClick={calculateAndSave}>{saving ? 'Calculando e salvando...' : savedFingerprint === inputFingerprint ? 'Jornada salva' : 'Calcular lucro'} <span>›</span></button></div>
             <div className="save-ride-area">
-              <button className="save-ride-button" type="button" disabled={saving || ridesLoading || clearingHistory || savedFingerprint === inputFingerprint} onClick={() => { void saveRide() }}><Save size={17} />{saving ? 'Salvando...' : savedFingerprint === inputFingerprint ? 'Jornada salva' : 'Salvar jornada'}</button>
               {saveMessage && <p className="save-feedback success" role="status">{saveMessage}</p>}
               {saveError && <p className="save-feedback error" role="alert">{saveError}</p>}
             </div>
           </div>
           <div className="result-column"><div key={resultHighlight} className={resultHighlight ? 'result-feedback' : ''}><ResultCard result={result} source={revenueSource} kilometers={input.kilometers} /></div><TipCard /></div>
         </section>
-      </> : activeNav === 'Resumo' ? <SummaryScreen result={result} /> : activeNav === 'Relatório' ? <ReportScreen rides={rides} loading={ridesLoading} error={ridesError} weeklyRental={weeklyRental} /> : activeNav === 'Histórico' ? <HistoryScreen rides={rides} loading={ridesLoading} error={ridesError} onRefresh={() => { void loadRides() }} onClear={clearHistory} clearing={clearingHistory} clearStatus={clearStatus} /> : <SettingsScreen weeklyRental={weeklyRental} onSave={saveWeeklyRental} />}
+      </> : activeNav === 'Resumo' ? <SummaryScreen result={result} /> : activeNav === 'Relatório' ? <ReportScreen rides={rides} loading={ridesLoading} error={ridesError} weeklyRental={weeklyRental} /> : activeNav === 'Histórico' ? <HistoryScreen rides={rides} loading={ridesLoading} error={ridesError} onRefresh={() => { void loadRides() }} /> : <SettingsScreen weeklyRental={weeklyRental} onSave={saveWeeklyRental} />}
       </div>
       <footer className="page-footer"><LogoMark className="footer-mark" /><span>Menos contas na cabeça. Mais foco no caminho.</span></footer>
       </div>
